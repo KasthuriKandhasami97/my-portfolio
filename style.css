@@ -45,6 +45,10 @@ ul { list-style: none; }
   color: var(--gold);
   margin-right: auto;
 }
+.logo{
+      width: 60px;
+    height: 50px;
+}
 .nav-links { display: flex; gap: 1.8rem; }
 .nav-links a {
   color: rgba(255,255,255,0.7);
