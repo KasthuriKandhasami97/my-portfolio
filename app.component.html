@@ -1,0 +1,146 @@
+<!-- FILE: src/app/app.component.html -->
+<div class="portfolio-app">
+
+  <!-- NAVBAR -->
+  <nav class="navbar" [class.scrolled]="navScrolled">
+    <div class="nav-logo">KK</div>
+    <ul class="nav-links">
+      <li><a (click)="scrollTo('about')">About</a></li>
+      <li><a (click)="scrollTo('skills')">Skills</a></li>
+      <li><a (click)="scrollTo('experience')">Experience</a></li>
+      <li><a (click)="scrollTo('education')">Education</a></li>
+      <li><a (click)="scrollTo('contact')">Contact</a></li>
+    </ul>
+    <button class="nav-cta" (click)="scrollTo('contact')">Hire Me</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero" *ngIf="profile">
+    <div class="hero-content">
+      <span class="hero-tag">Open to Opportunities</span>
+      <h1 class="hero-title">{{ profile.name }}</h1>
+      <p class="hero-subtitle">{{ profile.role }}</p>
+      <p class="hero-desc">{{ profile.about }}</p>
+      <div class="hero-actions">
+        <button class="btn-primary" (click)="scrollTo('contact')">Get In Touch</button>
+        <button class="btn-outline" (click)="scrollTo('experience')">View Work</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="avatar-ring">
+        <div class="avatar-inner">{{ profile.name[0] }}{{ profile.name.split(' ')[1]?.[0] }}</div>
+      </div>
+      <div class="float-badge b1">Python</div>
+      <div class="float-badge b2">Django</div>
+      <div class="float-badge b3">Angular</div>
+      <div class="float-badge b4">MySQL</div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about" *ngIf="profile">
+    <div class="container">
+      <div class="section-label">01 — About</div>
+      <h2 class="section-title">Building the future,<br/>one line at a time</h2>
+      <p>{{ profile.about }}</p>
+      <div class="about-stats">
+        <div class="stat"><span class="stat-num">2+</span><span class="stat-label">Years Exp.</span></div>
+        <div class="stat"><span class="stat-num">10+</span><span class="stat-label">Projects</span></div>
+        <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Technologies</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section section-dark" id="skills" *ngIf="profile">
+    <div class="container">
+      <div class="section-label light">02 — Skills</div>
+      <h2 class="section-title light">Technical Expertise</h2>
+      <div class="skills-grid">
+        <div class="skill-category" *ngFor="let group of profile.skills">
+          <h3>{{ group.category }}</h3>
+          <div class="skill-tags">
+            <span *ngFor="let item of group.items">{{ item }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="section" id="experience" *ngIf="profile">
+    <div class="container">
+      <div class="section-label">03 — Experience</div>
+      <h2 class="section-title">Work Journey</h2>
+      <div class="timeline">
+        <div class="timeline-item" *ngFor="let job of profile.experience">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-date">{{ job.period }}</span>
+            <h3>{{ job.title }}</h3>
+            <h4>{{ job.company }}</h4>
+            <ul>
+              <li *ngFor="let point of job.points">{{ point }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section section-accent" id="education" *ngIf="profile">
+    <div class="container">
+      <div class="section-label">04 — Education</div>
+      <h2 class="section-title">Academic Background</h2>
+      <div class="edu-grid">
+        <div class="edu-card" *ngFor="let edu of profile.education">
+          <div class="edu-icon">🎓</div>
+          <div class="edu-content">
+            <h3>{{ edu.degree }}</h3>
+            <h4>{{ edu.school }}</h4>
+            <p>{{ edu.year }}</p>
+            <span class="edu-grade">{{ edu.grade }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-label">05 — Contact</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="contact-grid">
+        <div class="contact-info" *ngIf="profile">
+          <p class="contact-tagline">Open to roles, freelance projects, and collaborations.</p>
+          <div class="contact-links">
+            <a [href]="'mailto:' + profile.email" class="contact-item">✉️ {{ profile.email }}</a>
+            <a [href]="profile.linkedin" target="_blank" class="contact-item">💼 LinkedIn</a>
+            <a [href]="profile.github" target="_blank" class="contact-item">🐙 GitHub</a>
+          </div>
+        </div>
+        <form class="contact-form" (ngSubmit)="submitContact()">
+          <div class="form-group">
+            <label>Name</label>
+            <input [(ngModel)]="contactForm.name" name="name" required placeholder="Your name"/>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input [(ngModel)]="contactForm.email" name="email" type="email" required placeholder="your@email.com"/>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea [(ngModel)]="contactForm.message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary full-width">Send Message 🚀</button>
+          <div *ngIf="formStatus === 'success'" class="form-success">✅ Message sent successfully!</div>
+          <div *ngIf="formStatus === 'error'" class="form-error">❌ Error sending. Try again.</div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer"><p>© 2025 Kasthuri K. Crafted with passion.</p></footer>
+</div>
